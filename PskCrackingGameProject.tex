@@ -1,0 +1,223 @@
+\documentclass[12pt,a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{longtable}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{lscape}
+\usepackage{float}
+\usepackage{array}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\geometry{
+    a4paper,
+    left=25mm,
+    right=25mm,
+    top=25mm,
+    bottom=25mm
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{PSK Cracking Game}
+\lhead{HITEC University - Cybersecurity}
+\cfoot{\thepage}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{1cm}
+    \includegraphics[width=0.3\textwidth]{hitec_logo.png}\\
+    \vspace{1cm}
+    {\Large \textbf{HITEC UNIVERSITY TAXILA}}\\
+    \vspace{0.5cm}
+    {\large \textbf{DEPARTMENT OF CYBERSECURITY}}\\
+    \vspace{0.5cm}
+    \rule{\textwidth}{0.5mm}\\
+    \vspace{0.5cm}
+    {\Huge \textbf{PSK CRACKING GAME}}\\
+    \vspace{0.5cm}
+    {\Large A Password Security Demonstration Tool}\\
+    \vspace{0.5cm}
+    \rule{\textwidth}{0.5mm}\\
+    \vspace{1.5cm}
+    
+    \begin{tabular}{>{\bfseries}l l}
+    Submitted By: & M. Ahad Shaheen (24-CYS-053)\\
+    & M. Faizan Muzaffar (24-CYS-037)\\
+    \end{tabular}
+    \vspace{1cm}
+    
+    \begin{tabular}{>{\bfseries}l l}
+    Submitted To: & Mr. Muhammad Khalid\\
+    Course: & CS-207 Computer Organization \& Assembly Language\\
+    Semester: & 2nd Semester 2024\\
+    \end{tabular}
+    \vspace{1cm}
+    
+    \textbf{Date of Submission:}\\
+    \vspace{0.2cm}
+    \today\\
+    \vfill
+\end{titlepage}
+
+\chapter*{Declaration}
+We declare that this project report titled \textbf{"PSK Cracking Game"} is our original work and has not been submitted elsewhere for any other degree or qualification.
+
+\vspace{1cm}
+\begin{tabular}{ll}
+\hspace{5cm} & \hspace{5cm} \\
+\cline{1-1} \cline{2-2}
+M. Ahad Shaheen & M. Faizan Muzaffar \\
+24-CYS-053 & 24-CYS-037 \\
+\end{tabular}
+
+\tableofcontents
+\newpage
+
+\chapter*{Abstract}
+This report documents the development of PSK Cracking Game, a Java application developed for HITEC University's Cybersecurity program. The project demonstrates brute-force password cracking techniques through a graphical user interface, serving as an educational tool for understanding password security vulnerabilities. The application features password generation, cracking simulation, and session logging capabilities.
+
+\chapter{Introduction}
+\section{Project Background}
+The PSK Cracking Game was developed as part of the 2nd semester curriculum in HITEC University's Cybersecurity program. This project:
+
+\begin{itemize}
+    \item Demonstrates practical password cracking techniques
+    \item Implements core cybersecurity concepts in Java
+    \item Serves as an educational tool for security awareness
+\end{itemize}
+
+\section{Team Composition}
+The project was developed by:
+\begin{itemize}
+    \item \textbf{M. Ahad Shaheen (24-CYS-053)}: GUI development and core algorithm implementation
+    \item \textbf{M. Faizan Muzaffar (24-CYS-037)}: File I/O operations and testing
+\end{itemize}
+
+\chapter{System Design}
+\section{Technical Specifications}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|l|}
+    \hline
+    \textbf{Component} & \textbf{Specification} \\ \hline
+    Programming Language & Java 11 \\ \hline
+    GUI Framework & Java Swing \\ \hline
+    Development Environment & IntelliJ IDEA \\ \hline
+    Target Platform & Windows/Linux \\ \hline
+    \end{tabular}
+    \caption{Technical Specifications}
+\end{table}
+
+\chapter{Implementation}
+\section{Core Features}
+\begin{itemize}
+    \item Password generation and storage
+    \item Brute-force cracking algorithm
+    \item Session logging
+    \item User-friendly GUI
+\end{itemize}
+
+\section{Code Samples}
+\begin{lstlisting}[language=Java,caption=Password Generation]
+public void setInputPsk(String inputPsk) {
+    this.inputPsk = inputPsk;
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=Java,caption=Cracking Algorithm]
+private void tryAll(String guess, String target, int maxLength) {
+    if (found || guess.length() > maxLength) return;
+    if (guess.equals(target)) {
+        found = true;
+        CrackedPsk = guess;
+        return;
+    }
+    for (int i = 0; i < CHARSET.length(); i++) {
+        if (found) return;
+        attempts++;
+        tryAll(guess + CHARSET.charAt(i), target, maxLength);
+    }
+}
+\end{lstlisting}
+
+\chapter{Results}
+\section{Testing Outcomes}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+    Test Case & Input & Expected Result & Actual Result \\ \hline
+    Password Generation & "Secure123" & Stored correctly & Passed \\ \hline
+    Short Password Crack & "Hi" & <1 second & Passed \\ \hline
+    File Operations & N/A & Proper save/load & Passed \\ \hline
+    \end{tabular}
+    \caption{Test Results}
+\end{table}
+
+\section{Screenshots}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{gui_screenshot.png}
+    \caption{Application Interface}
+\end{figure}
+
+\chapter{Conclusion}
+\section{Key Achievements}
+\begin{itemize}
+    \item Successful implementation of brute-force algorithm
+    \item Functional GUI with all specified features
+    \item Proper file handling for session persistence
+\end{itemize}
+
+\section{Future Enhancements}
+\begin{itemize}
+    \item Implement dictionary attacks
+    \item Add password strength meter
+    \item Multi-threading for performance
+\end{itemize}
+
+\appendix
+\chapter{Source Code}
+The complete source code is available at:\\
+\url{https://github.com/MuhammadAhadShaheen/PskCrackingGame.git}
+
+\chapter*{References}
+\begin{itemize}
+    \item Oracle Java Documentation
+    \item HITEC University Cybersecurity curriculum
+    \item "Java Swing" by TutorialsPoint
+\end{itemize}
+
+\end{document}
