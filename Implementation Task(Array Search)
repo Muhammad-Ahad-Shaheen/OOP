@@ -1,1 +1,153 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
+ */
+package arraysearchgui;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.*;
+
+public class ArraySearchGUI extends JFrame {
+
+    private JTextField[] arrayFields = new JTextField[10];
+    private JTextField searchField;
+    private JComboBox<String> algorithmBox;
+    private JLabel resultLabel;
+
+    public ArraySearchGUI() {
+        setTitle("Array Searching Application");
+        setSize(600, 400);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        setLayout(new BorderLayout(10, 10));
+
+        JPanel arrayPanel = new JPanel(new GridLayout(2, 5, 5, 5));
+        arrayPanel.setBorder(BorderFactory.createTitledBorder("Enter 10 Array Elements"));
+
+        for (int i = 0; i < 10; i++) {
+            arrayFields[i] = new JTextField();
+            arrayPanel.add(arrayFields[i]);
+        }
+        JPanel controlPanel = new JPanel(new GridLayout(4, 2, 10, 10));
+        controlPanel.setBorder(BorderFactory.createTitledBorder("Search Controls"));
+
+        controlPanel.add(new JLabel("Search Element:"));
+        searchField = new JTextField();
+        controlPanel.add(searchField);
+
+        controlPanel.add(new JLabel("Select Algorithm:"));
+        algorithmBox = new JComboBox<>(new String[]{
+                "Linear Search",
+                "Binary Search",
+                "Interpolation Search",
+                "Indexed Sequential Search"
+        });
+        controlPanel.add(algorithmBox);
+
+        JButton searchButton = new JButton("Search");
+        controlPanel.add(searchButton);
+
+        resultLabel = new JLabel(" ");
+        resultLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        controlPanel.add(resultLabel);
+
+        add(arrayPanel, BorderLayout.NORTH);
+        add(controlPanel, BorderLayout.CENTER);
+
+        searchButton.addActionListener(e -> performSearch());
+    }
+
+    private void performSearch() {
+        try {
+            int[] arr = new int[10];
+            for (int i = 0; i < 10; i++) {
+                arr[i] = Integer.parseInt(arrayFields[i].getText().trim());
+            }
+
+            int key = Integer.parseInt(searchField.getText().trim());
+            String algo = (String) algorithmBox.getSelectedItem();
+            boolean found = false;
+
+            switch (algo) {
+                case "Linear Search":
+                    found = linearSearch(arr, key);
+                    break;
+                case "Binary Search":
+                    Arrays.sort(arr);
+                    found = binarySearch(arr, key);
+                    break;
+                case "Interpolation Search":
+                    Arrays.sort(arr);
+                    found = interpolationSearch(arr, key);
+                    break;
+                case "Indexed Sequential Search":
+                    Arrays.sort(arr);
+                    found = indexedSequentialSearch(arr, key);
+                    break;
+            }
+
+            resultLabel.setText(found ? "Element Found!" : "Element Not Found.");
+
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this,
+                    "Please enter valid integers in all fields.",
+                    "Input Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+
+    private boolean linearSearch(int[] arr, int key) {
+        for (int value : arr) {
+            if (value == key) return true;
+        }
+        return false;
+    }
+
+    private boolean binarySearch(int[] arr, int key) {
+        int low = 0, high = arr.length - 1;
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            if (arr[mid] == key) return true;
+            if (arr[mid] < key) low = mid + 1;
+            else high = mid - 1;
+        }
+        return false;
+    }
+
+    private boolean interpolationSearch(int[] arr, int key) {
+        int low = 0, high = arr.length - 1;
+
+        while (low <= high && key >= arr[low] && key <= arr[high]) {
+            if (low == high) return arr[low] == key;
+
+            int pos = low + ((key - arr[low]) * (high - low)) / (arr[high] - arr[low]);
+
+            if (arr[pos] == key) return true;
+            if (arr[pos] < key) low = pos + 1;
+            else high = pos - 1;
+        }
+        return false;
+    }
+
+    private boolean indexedSequentialSearch(int[] arr, int key) {
+        int blockSize = (int) Math.sqrt(arr.length);
+        int prev = 0;
+
+        while (prev < arr.length && arr[Math.min(prev + blockSize, arr.length) - 1] < key) {
+            prev += blockSize;
+        }
+
+        for (int i = prev; i < Math.min(prev + blockSize, arr.length); i++) {
+            if (arr[i] == key) return true;
+        }
+        return false;
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new ArraySearchGUI().setVisible(true));
+    }
+}
